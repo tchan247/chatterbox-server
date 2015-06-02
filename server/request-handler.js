@@ -43,8 +43,14 @@ var requestHandler = function(request, response) {
 
   // .writeHead() writes to the request line and headers of the response,
   // which includes the status and all headers.
+  var obj = {
+    results: []
+  };
+  if (request.method === 'POST'){
+    statusCode = 201;
+  }
+
   response.writeHead(statusCode, headers);
-  var obj = {};
   // Make sure to always call response.end() - Node may not send
   // anything back to the client until you do. The string you pass to
   // response.end() will be the body of the response - i.e. what shows
