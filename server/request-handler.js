@@ -11,7 +11,7 @@ this file and include it in basic-server.js so that it actually works.
 *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html.
 
 **************************************************************/
-
+var results = [];
 var requestHandler = function(request, response) {
   // Request and Response come from node's http module.
   //
@@ -43,14 +43,29 @@ var requestHandler = function(request, response) {
 
   // .writeHead() writes to the request line and headers of the response,
   // which includes the status and all headers.
-  var obj = {
-    results: []
-  };
+
+    // var obj = {
+    //   results: []
+    // };
+
+  var body = '';
+
+
   if (request.method === 'POST'){
-    statusCode = 201;
+    request.on('data', function(chunk){
+      body += chunk;
+    });
+    request.on('end', function(){
+      results.push(JSON.parse(body));
+      statusCode = 201;
+      response.writeHead(statusCode, headers);
+      response.end(JSON.stringify( {results: results} ));
+    });
+  } else if (request.method === 'GET'){
+    response.writeHead(statusCode, headers);
+    response.end(JSON.stringify( { results: results } ));
   }
 
-  response.writeHead(statusCode, headers);
   // Make sure to always call response.end() - Node may not send
   // anything back to the client until you do. The string you pass to
   // response.end() will be the body of the response - i.e. what shows
@@ -58,7 +73,9 @@ var requestHandler = function(request, response) {
   //
   // Calling .end "flushes" the response's internal buffer, forcing
   // node to actually send all the data over to the client.
-  response.end(JSON.stringify(obj));
+  // if (request.method === "POST"){
+  //   console.log(obj.results);
+  // }
 };
 
 // These headers will allow Cross-Origin Resource Sharing (CORS).
