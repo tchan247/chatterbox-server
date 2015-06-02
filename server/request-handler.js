@@ -12,6 +12,7 @@ this file and include it in basic-server.js so that it actually works.
 
 **************************************************************/
 var results = [];
+var url = '/classes/messages';
 var requestHandler = function(request, response) {
   // Request and Response come from node's http module.
   //
@@ -61,8 +62,15 @@ var requestHandler = function(request, response) {
       response.writeHead(statusCode, headers);
       response.end(JSON.stringify( {results: results} ));
     });
-  } else if (request.method === 'GET'){
+  } else if (request.method === 'GET' && request.url !== url){
+    statusCode = 404;
     response.writeHead(statusCode, headers);
+    console.log(statusCode);
+    response.end(JSON.stringify({results:[]}));
+  } else if (request.method === 'GET'){
+    statusCode = 200;
+    response.writeHead(statusCode, headers);
+    console.log(statusCode);
     response.end(JSON.stringify( { results: results } ));
   }
 

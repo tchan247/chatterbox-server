@@ -5,14 +5,16 @@ var msgs;
 var friends = [];
 var rooms = [];
 
-var app = {};
+var app = {
+  server: 'https://127.0.0.1:3000/classes/chatterbox';
+};
 
 app.init = function(){};
 
 app.send = function(message){
   $.ajax({
     // always use this url
-    url: 'https://127.0.0.1:3000/classes/chatterbox',
+    url: this.server,
     type: 'POST',
     data: JSON.stringify(message),
     contentType: 'application/json',
@@ -30,7 +32,7 @@ app.send = function(message){
 app.fetch = function(){
   $.ajax({
     // always use this url
-    url: 'https://127.0.0.1:3000/classes/chatterbox',
+    url: this.server,
     type: 'GET',
     //data: JSON.stringify(message),
     contentType: 'application/json',
@@ -63,7 +65,6 @@ app.addRoom = function(){
   $('#roomSelect').append('<div class="room"> </div>');
 };
 
-app.server = 'https://api.parse.com/1/classes/chatterbox';
 
 // temp solution!!!!!!!!!!!!!!!!!!!!!!!!!!! for adding friends
 var addMsg = function(that){

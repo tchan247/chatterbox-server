@@ -2,7 +2,7 @@
 
 /* Import node's http module: */
 var http = require("http");
-var fs = require('fs');
+// var fs = require('fs');
 
 
 // Every server needs to listen on a port with a unique number. The
