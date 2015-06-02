@@ -44,10 +44,7 @@ var requestHandler = function(request, response) {
   // .writeHead() writes to the request line and headers of the response,
   // which includes the status and all headers.
   response.writeHead(statusCode, headers);
-  var obj;
-  if(request.method === "GET") {
-    obj = {};
-  }
+  var obj = {};
   // Make sure to always call response.end() - Node may not send
   // anything back to the client until you do. The string you pass to
   // response.end() will be the body of the response - i.e. what shows
@@ -73,6 +70,6 @@ var defaultCorsHeaders = {
   "access-control-allow-headers": "content-type, accept",
   "access-control-max-age": 10 // Seconds.
 };
-exports.requestFunction = requestHandler;
-exports.defaultCorsHeaders = defaultCorsHeaders;
+exports.requestHandler = requestHandler;
+// exports.defaultCorsHeaders = defaultCorsHeaders;
 
