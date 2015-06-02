@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>chatterbox</title>
+    <link rel="stylesheet" href="styles/styles.css">
+
+    <!-- dependencies -->
+    <script src="bower_components/jquery/jquery.min.js"></script>
+    <script src="bower_components/underscore/underscore.min.js"></script>
+    <!-- your scripts -->
+    <script src="env/config.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/scripts.js"></script>
+  </head>
+  <body>
+    <div id="main">
+      <h1>chatterbox</h1>
+      <!-- Your HTML goes here! -->
+
+
+      <select id='roomSelect'>
+        <option value='global'> Global </option>
+      </select>
+
+      <button type="button" class="showMessage">Press Me To Show Chats!</button>
+      <div>Input your chats here!</div>
+      <input type="text" class='nameInput' value='name'></input>
+      <input type="text" class='textInput' value='text'></input>
+      <input type="text" class='roomInput' value='room'></input>
+      <button type="button" class="submit"> Submit </button>
+      <div id="chats"></div>
+    </div>
+
+    <div class="friends"> Friends:
+      <ul></ul>
+    </div>
+  </body>
+</html>
