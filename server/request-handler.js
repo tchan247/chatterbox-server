@@ -22,15 +22,9 @@ var sendResponse = function(response, statusCode){
   response.end(JSON.stringify( {results: results} ));
 };
 
-var requestHandler = function(request, response) {
-  console.log("Serving request type " + request.method + " for url " + request.url);
-
-  // The outgoing status.
-  var statusCode;
-
-  var body = '';
-
-  if (request.method === 'POST'){
+var actions = {
+  'POST': function(request, response){
+    var body = '';
     request.on('data', function(chunk){
       body += chunk;
     });
@@ -38,16 +32,24 @@ var requestHandler = function(request, response) {
       results.push(JSON.parse(body));
       sendResponse(response, 201);
     });
-  } else if (request.method === 'GET' && url.indexOf(request.url) === -1){
-    sendResponse(response, 404);
-  } else if (request.method === 'GET'){
-    sendResponse(response, 200);
-  } else if (request.method === 'OPTIONS'){
-    // statusCode = 200;
-    // response.writeHead(statusCode, headers);
-    // response.end(null);
+  },
+  'GET': function(request, response){
+    if(url.indexOf(request.url) === -1) {
+      sendResponse(response, 404);
+    } else {
+      sendResponse(response, 200);
+    }
+  },
+  'OPTIONS': function(request, response){
     sendResponse(response, 200);
   }
+}
+
+var requestHandler = function(request, response) {
+  console.log("Serving request type " + request.method + " for url " + request.url);
+
+  // perform action on request type
+  actions[request.method](request, response);
 
 };
 
