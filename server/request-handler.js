@@ -11,11 +11,7 @@ this file and include it in basic-server.js so that it actually works.
 *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html.
 
 **************************************************************/
-var results = [{
-  username: 'me',
-  message: 'hi',
-  roomname: 'notUndefined'
-}];
+var results = [];
 var url = [
   '/classes/messages',
   '/classes/room1'
@@ -64,11 +60,9 @@ var requestHandler = function(request, response) {
       body += chunk;
     });
     request.on('end', function(){
-      console.log(JSON.parse(body));
       results.push(JSON.parse(body));
       statusCode = 201;
       response.writeHead(statusCode, headers);
-
       response.end(JSON.stringify( {results: results} ));
     });
   } else if (request.method === 'GET' && url.indexOf(request.url) === -1){
