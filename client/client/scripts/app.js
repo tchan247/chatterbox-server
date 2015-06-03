@@ -6,7 +6,7 @@ var friends = [];
 var rooms = [];
 
 var app = {
-  server: 'https://127.0.0.1:3000/classes/chatterbox';
+  server: 'http://127.0.0.1:3000/classes/messages'
 };
 
 app.init = function(){};
@@ -53,7 +53,7 @@ app.clearMessages = function(){
 app.addMessage = function(message){
   var weight = friends.indexOf(message.username) > -1? "bold" : "normal";
 
-  $('#chats').append('<a href="#" id="username" onclick="addMsg(this)" style="font-weight:'+ weight +'">' + message.username +'</a> <br> <div class="text" style="font-weight:'+ weight +'"> ' + message.text + '</div> <br> <a href="#" class="roomname" style="font-weight:'+ weight +'">' + message.roomname + ' </a>');
+  $('#chats').append('<a href="#" id="username" onclick="addMsg(this)" style="font-weight:'+ weight +'">' + message.username +'</a> <br> <div class="message" style="font-weight:'+ weight +'"> ' + message.message + '</div> <a href="#" class="roomname" style="font-weight:'+ weight +'">' + message.roomname + ' </a><br><br>');
 
   if(rooms.indexOf(message.roomname) === -1) {
     rooms.push(message.roomname);
@@ -69,7 +69,7 @@ app.addRoom = function(){
 // temp solution!!!!!!!!!!!!!!!!!!!!!!!!!!! for adding friends
 var addMsg = function(that){
   // console.log(that)
-  var name = that.text;
+  var name = that.message;
   if(friends.indexOf(name) === -1) {
     $('.friends').find('ul').prepend('<li><a href="#">' + name + '</a></li>');
     friends.push(name);
@@ -110,18 +110,18 @@ $('document').ready(function(){
   $('.submit').on("click", function(){
     var msg = {}
     msg.username = $('.nameInput').val();
-    msg.text = $('.textInput').val();
+    msg.message = $('.textInput').val();
     msg.roomname = $('.roomInput').val();
 
+    app.send(msg);
     app.fetch();
 
-    app.send(msg);
   });
 
   //Add friends
   // $('#username').on('click', function(){
   //   alert('test');
-  //   friends.push(this.text());
+  //   friends.push(this.message());
   // });
 });
 

@@ -11,8 +11,15 @@ this file and include it in basic-server.js so that it actually works.
 *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html.
 
 **************************************************************/
-var results = [];
-var url = '/classes/messages';
+var results = [{
+  username: 'me',
+  message: 'hi',
+  roomname: 'notUndefined'
+}];
+var url = [
+  '/classes/messages',
+  '/classes/room1'
+];
 var requestHandler = function(request, response) {
   // Request and Response come from node's http module.
   //
@@ -57,21 +64,25 @@ var requestHandler = function(request, response) {
       body += chunk;
     });
     request.on('end', function(){
+      console.log(JSON.parse(body));
       results.push(JSON.parse(body));
       statusCode = 201;
       response.writeHead(statusCode, headers);
+
       response.end(JSON.stringify( {results: results} ));
     });
-  } else if (request.method === 'GET' && request.url !== url){
+  } else if (request.method === 'GET' && url.indexOf(request.url) === -1){
     statusCode = 404;
     response.writeHead(statusCode, headers);
-    console.log(statusCode);
     response.end(JSON.stringify({results:[]}));
   } else if (request.method === 'GET'){
     statusCode = 200;
     response.writeHead(statusCode, headers);
-    console.log(statusCode);
     response.end(JSON.stringify( { results: results } ));
+  } else if (request.method === 'OPTIONS'){
+    statusCode = 200;
+    response.writeHead(statusCode, headers);
+    response.end(null);
   }
 
   // Make sure to always call response.end() - Node may not send
